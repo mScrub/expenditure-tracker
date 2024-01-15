@@ -1,0 +1,30 @@
+html,
+body {
+    height: 100%;
+    margin: 1rem;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.custom-a-tag {
+    text-decoration: none;
+    color: #98B0A9;
+    font: inherit;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background-color: #C6FCEC;
+    border: none;
+    border-radius: 0.6rem;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.custom-a-tag:hover,
+.custom-a-tag:active {
+    background-color: #8df3d4;
+}

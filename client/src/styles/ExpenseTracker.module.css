@@ -1,0 +1,173 @@
+html,
+body {
+  height: 100%;
+}
+
+#map {
+  height: 100%;
+}
+
+.main-container {
+  display: flex;
+}
+
+.left-container {
+  width: 50%;
+}
+
+.right-container {
+  width: 50%;
+}
+
+.control-group {
+  display: flex;
+  margin: auto;
+  padding: 0.5rem;
+  /* column-gap: 1rem; */
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.label-group {
+  margin-right: 1rem;
+  padding: 0.5rem;
+}
+
+.fixed-box-size {
+  width: 10.6rem;
+  text-align: left;
+}
+
+input {
+  background-color: #C6FCEC;
+}
+
+input,
+input::placeholder {
+  font-size: 0.9rem;
+}
+
+.form-control input,
+.form-control select {
+  display: flex;
+  justify-content: center;
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  width: 15rem;
+  max-width: 100%;
+}
+
+.form-control invalid {
+  margin-bottom: 1rem;
+  display: flex;
+  margin: auto;
+  padding: 2rem;
+  column-gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.form-control input:focus {
+  outline: none;
+  border-color: #240370;
+  background-color: #C6FCEC;
+}
+
+.invalid input {
+  border: 1px solid #8b1010;
+  background-color: #fddddd;
+}
+
+.form-control .invalid input {
+  border: 1px solid #b40e0e;
+  background-color: #fddddd;
+}
+
+.invalid input:focus {
+  border-color: #ff8800;
+  background-color: #fbe8d2;
+}
+
+.form-actions {
+  text-align: center;
+}
+
+.form-actions button {
+  margin-left: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+
+#description {
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+#infowindow-content .title {
+  font-weight: bold;
+}
+
+#infowindow-content {
+  display: none;
+}
+
+#map #infowindow-content {
+  display: inline;
+}
+
+.pac-card {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  overflow: hidden;
+  font-family: Roboto;
+  padding: 0;
+}
+
+#pac-container {
+  padding-bottom: 12px;
+  margin-right: 12px;
+}
+
+.pac-controls {
+  display: inline-block;
+  padding: 5px 11px;
+}
+
+.pac-controls label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 400px;
+}
+
+#pac-input:focus {
+  border-color: #4d90fe;
+}
+
+#title {
+  color: #fff;
+  background-color: #4d90fe;
+  font-size: 25px;
+  font-weight: 500;
+  padding: 6px 12px;
+}
