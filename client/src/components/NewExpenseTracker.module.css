@@ -78,7 +78,7 @@ input::placeholder {
 
 .invalid input {
   border: 1px solid #8b1010;
-  background-color: #fddddd;
+  background-color: #f0f0f0;
 }
 
 .form-control .invalid input {
@@ -170,4 +170,27 @@ input::placeholder {
   font-size: 25px;
   font-weight: 500;
   padding: 6px 12px;
+}
+
+@media screen and (min-width: 750px) {
+  .main-container {
+    display: flex;
+  }
+
+  .left-container {
+    width: 50%;
+  }
+
+  .right-container {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .main-container, .left-container, .right-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
 }

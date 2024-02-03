@@ -13,6 +13,10 @@ const useInput = (validateEnteredValue) => {
         setEnteredValue(event.target.value);
     }
 
+    const addrInputChangeHandler = incString => {
+        setEnteredValue(incString)
+    }
+
     const valueInputBlurOrFocusHandler = () => {
         setIsFieldTouched(true);
     }
@@ -27,6 +31,7 @@ const useInput = (validateEnteredValue) => {
         isInputValid: valueIsValid,
         valueHasError,
         valueInputChangeHandler,
+        addrInputChangeHandler,
         valueInputBlurOrFocusHandler,
         resetStates,
     }

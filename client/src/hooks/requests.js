@@ -15,6 +15,26 @@ async function httpCreateUserFE(userData) {
     }
 }
 
+async function httpCreateExpense(expenseData) {
+    try {
+        return await fetch(`${API_URL}/submitExpense`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(expenseData)
+        })
+
+    } catch (error) {
+        return {
+            ok: false,
+            error: "Failed to make post request"
+
+        }
+    }
+}
+
 export  {
-    httpCreateUserFE
+    httpCreateUserFE,
+    httpCreateExpense
 }

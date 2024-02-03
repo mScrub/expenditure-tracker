@@ -1,16 +1,21 @@
 import classes from '../styles/ExpenseTracker.module.css'
 
-const TrackerDataEntryField = ({children, htmlFor, baseCSS, suppCSS, id, placeholderVal, changeHandler, blurHandler, enteredValue, isDisabled }) => {
+const FormEntryField = ({ fieldType, children, htmlFor, baseCSS, suppCSS, id, placeholderVal, changeHandler, blurHandler, enteredValue, isReadOnly, name}) => {
     
     let inputComponent = (
         <input type='text' id={id}
             placeholder={placeholderVal}
+            readOnly={isReadOnly}
             onChange={changeHandler}
             onBlur={blurHandler}
             value={enteredValue}
-            disabled={isDisabled}
+            name={name}
         />
     )
+    
+    if (fieldType === 'date') {
+        inputComponent = (<DateSelector dateChange={changeHandler} onDateBlur={blurHandler} selectedDate={enteredValue} name={name} />)
+    }
 
     return (
         <>
@@ -31,4 +36,4 @@ const TrackerDataEntryField = ({children, htmlFor, baseCSS, suppCSS, id, placeho
 
 }
 
-export default TrackerDataEntryField;
+export default FormEntryField;
