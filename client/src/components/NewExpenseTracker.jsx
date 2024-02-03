@@ -100,7 +100,7 @@ function ExpenseTracker() {
               name='address'
               changeHandler={addrChangeHandler}
               blurHandler={addrBlurHandler}
-              enteredValue={autofillAddress}
+              enteredValue={enteredAddr}
               baseCSS={baseInputCSSClass}
               suppCSS={truncateClassAddr}>Address:
             </FormEntryField>

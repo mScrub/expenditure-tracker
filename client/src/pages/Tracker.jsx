@@ -1,10 +1,10 @@
 import { Fragment } from 'react'
-import ExpenseTracker from '..components/ExpenseTracker';
+import NewExpenseTracker from '../components/NewExpenseTracker';
 
 const Tracker = () => {
     return (
         <Fragment>
-            <ExpenseTracker />
+            <NewExpenseTracker />
         </Fragment>
     )
 }
