@@ -34,7 +34,24 @@ async function httpCreateExpense(expenseData) {
     }
 }
 
+async function httpGetExpenseList() {
+    try {
+        const response = await fetch(`${API_URL}/getExpenseList`, {
+            method: "get",
+        })
+        const respData = await response.json();
+        // data parsing
+        return respData;
+    } catch (err) {
+        return {
+            ok: false,
+            error: "Failed to retrieve expense post for this user"
+        }
+    }
+}
+
 export  {
     httpCreateUserFE,
-    httpCreateExpense
+    httpCreateExpense,
+    httpGetExpenseList
 }
