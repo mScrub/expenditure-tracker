@@ -3,7 +3,7 @@ import { GoogleMap, Marker } from "@react-google-maps/api"
 import classes from './Custommap.module.css'
 import PlacesAutocomplete from './PlacesAutoComplete'
 
-export default function Custommap({onUpdateAddress}) {
+export default function Custommap({onUpdateAddress, onInputTouch, onFormSubmission}) {
     const [center, setCenter] = useState({lat: 49.28, lng: -123.12});
     const [zoom, setZoom] = useState(10);
     const [selectedCamPos, setSelectedCamPos] = useState(null); 
@@ -14,7 +14,7 @@ export default function Custommap({onUpdateAddress}) {
     }, [selectedCamPos, zoom])
     return (<>
         <div className={classes["places-container"]}>
-            <PlacesAutocomplete setSelected={setSelectedCamPos} onUpdateAddressAutoComp={onUpdateAddress} />
+            <PlacesAutocomplete setSelected={setSelectedCamPos} onUpdateAddressAutoComp={onUpdateAddress} inputTouch={onInputTouch} inputFieldReset={onFormSubmission}/>
         </div>
         <div >
             <GoogleMap zoom={zoom} center={center} mapContainerStyle={{ width: '100%', height: '400px', marginTop: '10px', borderRadius: '0.5rem'}}>

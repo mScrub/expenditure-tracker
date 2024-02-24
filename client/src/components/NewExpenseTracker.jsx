@@ -10,6 +10,7 @@ import FormEntryField from './FormEntryField';
 
 function ExpenseTracker() {
   const [formIsValid, setFormIsValid] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [pendingExpenseCreation, setIsPendingExpenseCreation] = useState(false);
   const { submitExpense } = useExpenses();
 
@@ -67,6 +68,7 @@ function ExpenseTracker() {
 
   const formSubmissionHandler = async (event) => {
     event.preventDefault();
+    setIsFormSubmitted(true);
     if (!enteredNameIsValid || !enteredAmountSpent || !enteredDate || !enteredAddr) return;
     const createExpStat = await submitExpense(event);
     if (!createExpStat.respFlag) {
@@ -158,7 +160,7 @@ function ExpenseTracker() {
         </div>
 
         <div className={classes['right-container']}>
-          <GoogleMapsPlaces onAddressChange={addrChangeHandler} />
+          <GoogleMapsPlaces onAddressChange={addrChangeHandler} onFieldTouch={addrBlurHandler} onFormSubmission={isFormSubmitted}  />
         </div>
       </div>
     </>

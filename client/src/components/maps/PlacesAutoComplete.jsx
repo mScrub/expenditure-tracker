@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import classes from './Custommap.module.css'
 
 import usePlacesAutocomplete, {
@@ -14,7 +15,7 @@ import {
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 
-const PlacesAutoComplete = ({ setSelected , onUpdateAddressAutoComp}) => {
+const PlacesAutoComplete = ({ setSelected , onUpdateAddressAutoComp, inputTouch, inputFieldReset }) => {
     const {
         ready,
         value,
@@ -31,10 +32,20 @@ const PlacesAutoComplete = ({ setSelected , onUpdateAddressAutoComp}) => {
         const { lat, lng } = await getLatLng(results[0]); 
         setSelected({ lat, lng }); 
     };
+    useEffect(() => {
+        if(inputFieldReset) {
+            setValue('');
+        }
+    }, [inputFieldReset, setValue])
+
+    const handleChange = (event) => {
+        setValue(event.target.value)
+
+    }
 
     return <>
         <Combobox onSelect={handleSelect}>
-            <ComboboxInput value={value} onChange={(e) => setValue(e.target.value)} disabled={!ready}
+            <ComboboxInput onBlur={inputTouch} value={value} onChange={handleChange} disabled={!ready}
                 className={classes["combobox-input"]} placeholder="Search an address" />
             <ComboboxPopover>
                 <ComboboxList>
