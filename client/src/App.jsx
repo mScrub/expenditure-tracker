@@ -6,6 +6,7 @@ import AboutPage from './pages/About'
 import SignupPage from './pages/Signup';
 import TrackerPage from './components/NewExpenseTracker'
 import RootLayoutWrapper from './pages/RootLayoutWrapper'
+import ExpenseRecord from './pages/ExpenseRecord';
 
 const router = createBrowserRouter([
   {
@@ -15,7 +16,9 @@ const router = createBrowserRouter([
       { path: '/', element: <HomePage /> },
       { path: '/about', element: <AboutPage /> },
       { path: '/signup', element: <SignupPage /> },
-      { path: '/tracker', element: <TrackerPage /> }]
+      { path: '/tracker', element: <TrackerPage /> },
+      { path: '/expensehistory', element: <ExpenseRecord/>,}
+    ]
   },
 ]);
 
