@@ -1,0 +1,73 @@
+.iconized-content {
+    display: flex;
+    justify-content: center; 
+    align-items: baseline;
+}
+
+.exp-card:hover {
+    background-color: #8df3d4;
+    opacity: 0.15;
+}
+
+.exp-card a {
+    text-decoration: none;
+}
+
+@keyframes animate-cards-in {
+    from {
+        opacity: 0;
+        transform: translateX(-1rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.location {
+    font: inherit;
+    font-size: 0.625rem;
+    color: #0e1111;
+    margin: 0;
+    text-transform: uppercase;
+    padding-left: 0.2rem;
+}
+
+.amount-spent {
+    white-space: pre-wrap;
+    font: inherit;
+    font-size: 0.625rem;
+    margin: 0.25rem 0 0 0;
+    color: #414a4c;
+    padding: 0 0 0.5rem 0.2rem;
+    justify-content: center;
+}
+
+@media screen and (min-width: 700px) {
+    .exp-card {
+        border: 0.2rem;
+        margin: 1rem 0;
+        padding: 1rem;
+        background-color: #C6FCEC;
+        justify-content: center;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        animation: animate-cards-in 1s ease-out forwards;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .exp-card {
+        border: 0.2rem;
+        margin: 1rem 0;
+        padding: 1rem;
+        background-color: #C6FCEC;
+        justify-content: center;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        animation: animate-cards-in 1s ease-out forwards;
+        width: 15rem;
+    }
+    
+}
