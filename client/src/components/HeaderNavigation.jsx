@@ -17,6 +17,9 @@ const Header = () => {
                         <li>
                             <Link to='/Tracker'>Tracker</Link>
                         </li>
+                        <li>
+                            <Link to='/ExpenseHistory'>Record</Link>
+                        </li>
                     </ul>
                 </nav>
             </header>
