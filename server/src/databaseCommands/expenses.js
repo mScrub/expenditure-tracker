@@ -80,10 +80,38 @@ async function createExpense(postExpenseData) {
             error: error.sqlMessage,
             isSuccess: false
         }
+    }
+}
 
+async function getExpenseList(user) {
+    let getExpenseListSQL = `
+    SELECT expense_id, address, location_name, amount_spent, date_of_exp, unique_url 
+    FROM expense 
+    WHERE user_id = :user_id`
+
+    let expenseRetrievalParams = {
+        user_id: user.userId
+    }
+
+    try {
+        let expenseListResult = await mySQLDB.query(getExpenseListSQL, expenseRetrievalParams)
+        console.log("Expense List retrieved successfully")
+        return {
+            expenseListData: expenseListResult[0],
+            isSuccessRetrieval: true
+        }
+
+    } catch (error) {
+        console.log(error)
+        console.log("Failed to retrieve expense list")
+        return {
+            error: error.sqlMessage,
+            isSuccessRetrieval: false
+        }
     }
 }
 
 module.exports = {
-    createExpense
+    createExpense,
+    getExpenseList
 }

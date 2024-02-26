@@ -15,7 +15,17 @@ async function addExpense(expenseData) {
     return success
 }
 
+async function getExpenseList(loggedInUser) {
+    let success = await db_expenses.getExpenseList({
+        userId: 1
+    })
+    console.log(success + "Retrieved after DB")
+    return success
+}
+
+
 
 module.exports = {
     addExpense,
+    getExpenseList
 }

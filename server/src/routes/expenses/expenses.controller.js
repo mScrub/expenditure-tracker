@@ -1,5 +1,6 @@
 const {
-    addExpense
+    addExpense,
+    getExpenseList,
 } = require('../../models/expenses.models')
 
 const httpCreateExpense = async (req, res) => {
@@ -20,6 +21,22 @@ const httpCreateExpense = async (req, res) => {
     }
 }
 
+const httpGetExpenseList = async (req, res) => {
+    let pendingRetrieval = await getExpenseList(1)
+    if (!pendingRetrieval.isSuccessRetrieval) {
+        return res.status(400).json({
+            error: "Failed to retrieve expense post list"
+        })
+    } else {
+        console.log(pendingRetrieval.expenseListData)
+        return res.status(200).json({
+            ok: true,
+            expenseList: pendingRetrieval.expenseListData
+        })
+    }
+}
+
 module.exports = {
-    httpCreateExpense
+    httpCreateExpense,
+    httpGetExpenseList
 }
