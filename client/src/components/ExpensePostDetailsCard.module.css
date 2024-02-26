@@ -1,0 +1,46 @@
+p {
+    margin: 0.5rem;
+    font-size: 0.6rem;
+}
+
+.content {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: black;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.date {
+    white-space: pre-wrap;
+    font-size: 1.25rem;
+    margin: 0.25rem 0 0 0;
+    font-style: italic;
+}
+
+.expense-detail label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.expense-control-group {
+    display: flex;
+    margin: auto;
+    padding: 1rem;
+    align-items: center;
+    z-index: 1;
+    width: 30rem;
+    background-color:#C6FCEC;
+}
+
+.expense-label-group {
+    margin-right: 1rem;
+    padding: 0.5rem;
+}
+
+.expense-fixed-label-size {
+    width: 10.6rem;
+    text-align: left;
+}
+

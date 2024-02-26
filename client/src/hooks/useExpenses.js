@@ -1,6 +1,7 @@
 import {
     httpCreateExpense,
-    httpGetExpenseList
+    httpGetExpenseList,
+    httpGetExpensePostDetail
 } from "./requests";
 
 
@@ -31,7 +32,6 @@ function useExpenses() {
 
     const getExpenseList = async () => {
         const response = await httpGetExpenseList()
-        // above parse is complete, then send out the list or send out an empty list
         let success = response.ok
         if (success) {
             return response.expenseList;
@@ -45,3 +45,16 @@ function useExpenses() {
     }
 }
 export default useExpenses;
+
+export const getExpensePostDetails = async (expensePostId) => {
+    const response = await httpGetExpensePostDetail(expensePostId)        ;
+    const result = response.ok 
+    if (!result) {
+        return {
+            ok: false, 
+            error: 'No such post detail'
+        }
+    } else {
+        return response.expenseDetail;
+    }
+}

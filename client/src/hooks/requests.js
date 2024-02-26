@@ -40,7 +40,6 @@ async function httpGetExpenseList() {
             method: "get",
         })
         const respData = await response.json();
-        // data parsing
         return respData;
     } catch (err) {
         return {
@@ -50,8 +49,22 @@ async function httpGetExpenseList() {
     }
 }
 
+async function httpGetExpensePostDetail({params}) {
+    try {
+        const response = await fetch(`${API_URL}/expenseHistory/${params.expensePostId}`)
+        const postData = await response.json()
+        return postData;
+    } catch (error) {
+        return {
+            ok: false,
+            error: "Unable to fetch post details"
+        }
+    }
+}
+
 export  {
     httpCreateUserFE,
     httpCreateExpense,
-    httpGetExpenseList
+    httpGetExpenseList,
+    httpGetExpensePostDetail
 }
