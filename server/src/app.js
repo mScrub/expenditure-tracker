@@ -3,7 +3,7 @@ const path = require('path')
 const cors = require('cors')
 require('dotenv').config();
 const usersRouter = require('./routes/users/users.routers')
-const expensesRouter = require('./routes/users/expenses/expenses.routers');
+const expensesRouter = require('./routes/expenses/expenses.router');
 const app = express();
 
 app.use(cors({
