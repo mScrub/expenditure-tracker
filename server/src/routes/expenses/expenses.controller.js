@@ -36,7 +36,24 @@ const httpGetExpenseList = async (req, res) => {
     }
 }
 
+const httpGetExpensePostDetail = async (req, res) => {
+    let expenseParamsId = req.params.expensePostId; 
+    const expensePostDetails = await getExpensePostDet(expenseParamsId)
+    console.log(expensePostDetails)
+    if (!expensePostDetails[1].isSuccessRetrieval) {
+        return res.status(400).json({
+            error: "Failed to retrieve expense post detail"
+        })
+    } else {
+        res.status(200).json({
+            ok: true, 
+            expenseDetail: expensePostDetails
+        })
+    }
+}
+
 module.exports = {
     httpCreateExpense,
-    httpGetExpenseList
+    httpGetExpenseList,
+    httpGetExpensePostDetail
 }

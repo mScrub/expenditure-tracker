@@ -111,7 +111,36 @@ async function getExpenseList(user) {
     }
 }
 
+async function getExpensePostDetail(paramsData) {
+    try {
+        // temp.
+        let getExpensePostDetailSQL = `
+        SELECT address, location_name, amount_spent, date_of_exp 
+        FROM expense
+        WHERE user_id = 1
+        AND unique_url = :paramsId`
+
+        let postDetExpenseParams = {
+            paramsId: paramsData.postDetailId
+        }
+
+        const postDetResult = await mySQLDB.query(getExpensePostDetailSQL, postDetExpenseParams)
+        return {
+            expensePostDetail: postDetResult[0],
+            isSuccessRetrieval: true 
+        }
+    } catch (error) {
+        console.log("Unsuccessful retrieval of expense post detail");
+        console.log(error);
+        return {
+            error: error.sqlMessage,
+            isSuccessRetrieval: false
+        }
+    }
+}
+
 module.exports = {
     createExpense,
-    getExpenseList
+    getExpenseList,
+    getExpensePostDetail
 }

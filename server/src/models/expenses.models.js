@@ -23,9 +23,18 @@ async function getExpenseList(loggedInUser) {
     return success
 }
 
-
+async function getExpensePostDet(expenseParamsID) {
+    let postDetail = await db_expenses.getExpensePostDetail({
+        userId: 1,
+        postDetailId: expenseParamsID  
+    })
+    let postDetailCopy = [...postDetail.expensePostDetail, {isSuccessRetrieval: postDetail.isSuccessRetrieval, error: postDetail.error}];
+    postDetailCopy[0].date_of_exp = moment(postDetailCopy[0].date_of_exp).format("YYYY-MM-DD")
+    return postDetailCopy
+}
 
 module.exports = {
     addExpense,
-    getExpenseList
+    getExpenseList,
+    getExpensePostDet
 }
