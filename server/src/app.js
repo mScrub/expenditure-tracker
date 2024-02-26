@@ -16,7 +16,6 @@ app.use(usersRouter);
 app.use(expensesRouter);
 
 app.get('/*', (req, res) => {
-x
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
 
