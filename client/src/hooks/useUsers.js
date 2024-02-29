@@ -10,10 +10,22 @@ function useUsers() {
             username, email, password
         })
         const success = response.ok
-        if (success) {
-            return true;
+        const message = response.message
+        if (message === "Email Conflict" && !success) {
+            return {
+                ok: false,
+                message: "Duplicate Email"
+            }
+        } else if (message === "Missing Data" && !success) {
+            return {
+                ok: false,
+                message: "Missing Form Field Data"
+            }
         } else {
-            return false;
+            return {
+                ok: true,
+                message: undefined 
+            }
         }
     })
 

@@ -48,8 +48,7 @@ async function getEmails() {
 async function getUser() {
     let getUserSQL = `
     SELECT *
-    FROM 
-    user`
+    FROM user`
 
     try {
         const result = await mySQLDB.query(getUserSQL)

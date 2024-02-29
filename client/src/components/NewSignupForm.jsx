@@ -8,6 +8,8 @@ import { isAlphaNumeric } from '../utilities/sideFunctions';
 
 const NewSignupForm = () => {
     const [isDuplicateEmail, setIsDuplicateEmail] = useState(false);
+    const [isMissingData, setIsMissingData] = useState(false);
+
     const { submitUser } = useUsers();
 
     const [formIsValid, setFormIsValid] = useState(false);
@@ -59,9 +61,14 @@ const NewSignupForm = () => {
         event.preventDefault();
         if (!enteredUserNameIsValid || !enteredEmailIsValid || !enteredPasswordIsValid) return;
         const createStatus = await submitUser(event);
-        if (!createStatus) {
+        if (!createStatus.ok && createStatus.message === "Duplicate Email") {
             resetFields();
             setIsDuplicateEmail(true);
+            return;
+        } 
+        if (!createStatus.ok && createStatus.message === "Missing Form Field Data") {
+            setIsMissingData(true);
+            resetFields();
             return;
         }
         resetFields();
@@ -123,6 +130,7 @@ const NewSignupForm = () => {
                 </FormEntryField>
                 <div>
                     {isDuplicateEmail && <p>Email is invalid</p>}
+                    {isMissingData && <p>Input can't be left empty</p>}
                     {enteredUserNameIsInvalid && <p>Username must not be empty</p>}
                     {enteredEmailIsInvalid && <p>Email must not be empty & must contain @</p>}
                     {enteredPasswordIsInvalid && <div>
