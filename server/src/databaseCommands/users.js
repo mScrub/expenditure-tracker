@@ -31,6 +31,20 @@ async function createUser(postUserData) {
     }
 }
 
+async function getEmails() {
+    let getEmailsSQL = `
+    SELECT email
+    FROM user`
+
+    try {
+        const emailResult = await mySQLDB.query(getEmailsSQL);
+        console.log("Succeeded in email list retrieval")      
+        return emailResult[0];
+    } catch (err) {
+        console.log("Failed to retrieve emails");
+    }
+}
+
 async function getUser() {
     let getUserSQL = `
     SELECT *
@@ -48,4 +62,4 @@ async function getUser() {
     }
 }
 
-module.exports = {createUser, getUser}
+module.exports = {createUser, getUser, getEmails}

@@ -11,5 +11,10 @@ async function addUser(userData) {
     return successObj;
 }
 
+async function getEmails() {
+    let emails = await db_users.getEmails();
+    return emails;
+}
 
-module.exports = {addUser}
+
+module.exports = {addUser, getEmails}
