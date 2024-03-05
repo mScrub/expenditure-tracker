@@ -4,6 +4,7 @@ const cors = require('cors')
 require('dotenv').config();
 const usersRouter = require('./routes/users/users.routers')
 const expensesRouter = require('./routes/expenses/expenses.router');
+const authRouter = require('./routes/auth/auth.router')
 const app = express();
 
 app.use(cors({
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '..', 'public')))
 app.use(usersRouter);
+app.use(authRouter);
 app.use(expensesRouter);
 
 app.get('/*', (req, res) => {
