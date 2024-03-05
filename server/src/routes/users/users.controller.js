@@ -1,4 +1,6 @@
 const { addUser, getEmails, getUsers} = require ('../../models/users.models')
+const jwt = require('jsonwebtoken')
+
 
 async function httpCreateUser(req, res) {
     let user = req.body
@@ -27,7 +29,21 @@ async function httpAuthUser(req, res) {
     if (!locatedUser) return res.status(401);
     const pwMatch = await bcrypt.compare(user.password, locatedUser.hashed_password)
     if (pwMatch) {
-        res.json({"success": `User ${locatedUser.username} logged in succesfully!`})
+        const accessToken = jwt.sign(
+            {"username": locatedUser.username},
+            process.env.ACCESS_TOKEN_SECRET,
+            {expiresIn: '30s'}
+        )
+        const refreshToken = jwt.sign(
+            {"username": locatedUser.username},
+            process.env.REFRESH_TOKEN_SECRET,
+            {expiresIn: '1d'}
+        )
+        res.cookie('jwt', refreshToken, {maxAge:  24 * 60 * 60 * 1000, httpOnly: true,})
+        res.json({
+            "aT": accessToken,
+            "success": `User ${locatedUser.username} logged in succesfully!`
+        })
     } else {
         return res.status(401);
     }
