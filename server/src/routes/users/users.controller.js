@@ -12,7 +12,7 @@ async function httpCreateUser(req, res) {
     if (duplicate) return res.status(409).json({"message": "Duplicate email."})
     const pendingUserCreation = await addUser(user)
     if (!pendingUserCreation.isSuccess) {
-        return res.status(400).json({"message": "Duplicate email!"})
+        return res.status(400).json({"message": pendingUserCreation.message})
     }
     else {
         return res.status(201).json(pendingUserCreation)
@@ -39,13 +39,13 @@ async function httpAuthUser(req, res) {
             process.env.REFRESH_TOKEN_SECRET,
             {expiresIn: '1d'}
         )
-        res.cookie('jwt', refreshToken, {maxAge:  24 * 60 * 60 * 1000, httpOnly: true,})
+        res.cookie('jwt', refreshToken, {maxAge:  24 * 60 * 60 * 1000, httpOnly: true, secure: true})
         res.json({
             "aT": accessToken,
             "success": `User ${locatedUser.username} logged in succesfully!`
         })
     } else {
-        return res.status(401);
+        return res.status(401).json({"message" : "Unauthorized"});
     }
 }
 
