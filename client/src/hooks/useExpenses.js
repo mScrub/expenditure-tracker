@@ -3,6 +3,7 @@ import {
     httpGetExpenseList,
     httpGetExpensePostDetail
 } from "./requests";
+const lookup = require('../utilities/objectLookup')
 
 
 function useExpenses() {
@@ -48,11 +49,12 @@ export default useExpenses;
 
 export const getExpensePostDetails = async (expensePostId) => {
     const response = await httpGetExpensePostDetail(expensePostId)        ;
-    const result = response.ok 
-    if (!result) {
+    const result = response.ok;
+    const message = response.message;
+    if (!result && message === lookup.ERROR_MSG.failedExpDetailsFetch) {
         return {
             ok: false, 
-            error: 'No such post detail'
+            message: lookup.ERROR_MSG.noExpDetail
         }
     } else {
         return response.expenseDetail;

@@ -72,17 +72,23 @@ async function httpGetExpenseList() {
     }
 }
 
-async function httpGetExpensePostDetail({
-    params
-}) {
+async function httpGetExpensePostDetail({params}) {
     try {
         const response = await fetch(`${API_URL}/expenseHistory/${params.expensePostId}`)
-        const postData = await response.json()
-        return postData;
+        if (response.ok) {
+            return response;
+        } else {
+            if (response.status === lookup.ERROR_CODES[400]) throw new Error(lookup.ERROR_THROWS.throw400)
+            throw new Error(response.status);
+        }
     } catch (error) {
-        return {
-            ok: false,
-            error: "Unable to fetch post details"
+        console.error("Detail Fetch", error);
+        let errorContent = error.toString();
+        if (errorContent.includes(lookup.ERROR_CODES[400])) {
+            return {
+                ok: false,
+                message: lookup.ERROR_MSG.failedExpDetailsFetch
+            }
         }
     }
 }

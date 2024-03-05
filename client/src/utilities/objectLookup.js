@@ -1,7 +1,9 @@
 const ERROR_MSG = {
     usernameConflict: "Username Conflict",
     duplicateUsername: "Duplicate Username",
-    missingData: "Missing Data"
+    missingData: "Missing Data",
+    failedExpDetailsFetch: "Unable to fetch post details",
+    noExpDetail: "No such post detail"
 }
 
 const ERROR_CODES = {
@@ -15,6 +17,8 @@ const ERROR_THROWS = {
     throw400 : "400, Missing Data",
     throw409 : "409, Conflict",
 }
+
+
 
 module.exports = {
     ERROR_MSG,
