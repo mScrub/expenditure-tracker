@@ -41,6 +41,34 @@ async function httpAuthUser(req, res) {
     }
 }
 
+ function httpHandleRefreshT(req, res) {
+    const cookies = req.cookies;
+    if (!cookies?.jwt) return res.status(401).json({
+        message: srvLookup.ERROR_CODE_MSG[401]
+    });
+    const refreshToken = cookies.jwt;
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, 
+        async (err, decoded) => {
+            if (err) return res.status(403).json({
+                message: srvLookup.ERROR_CODE_MSG[403]
+            })
+            const locatedUser = await getUsers(exstUser => exstUser.username === decoded.username)
+            if (!locatedUser) return res.status(401).json({
+                message: srvLookup.ERROR_CODE_MSG[401]
+            })
+            const accessToken = jwt.sign({
+                username: locatedUser.username,
+            },  process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: srvLookup.TOKEN_EXPIRATION.expiresIn30s
+            })
+            res.json({
+                aT: accessToken
+            })
+        }
+    )
+}
+
 module.exports = {
     httpAuthUser,
+    httpHandleRefreshT
 }

@@ -6,13 +6,14 @@ const usersRouter = require('./routes/users/users.routers')
 const expensesRouter = require('./routes/expenses/expenses.router');
 const authRouter = require('./routes/auth/auth.router');
 const verifyJWT = require('./middleware/verifyJWT');
+const cookieParser = require('cookie-parser')
 const app = express();
 
 app.use(cors({
     origin: 'http://localhost:3000',
 }))
 app.use(express.json());
-
+app.use(cookieParser())
 app.use(express.static(path.join(__dirname, '..', 'public')))
 app.use(usersRouter);
 app.use(authRouter);
