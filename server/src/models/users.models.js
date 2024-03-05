@@ -16,5 +16,9 @@ async function getEmails() {
     return emails;
 }
 
+async function getUsers() {
+    let users = await db_users.getUsers();
+    return users;
+}
 
-module.exports = {addUser, getEmails}
+module.exports = {addUser, getEmails, getUsers}

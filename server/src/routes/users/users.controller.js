@@ -1,4 +1,4 @@
-const {addUser} = require ('../../models/users.models')
+const { addUser, getEmails, getUsers} = require ('../../models/users.models')
 
 async function httpCreateUser(req, res) {
     let user = req.body
@@ -17,6 +17,22 @@ async function httpCreateUser(req, res) {
     }
 }
 
+async function httpAuthUser(req, res) {
+    const user = req.body
+    if (!user.email || !user.password) return res.status(400).json({
+        "message": "Email and password are needed."
+    })
+    const users = await getUsers();
+    const locatedUser = users.find(person => person.email === user.email);
+    if (!locatedUser) return res.status(401);
+    const pwMatch = await bcrypt.compare(user.password, locatedUser.hashed_password)
+    if (pwMatch) {
+        res.json({"success": `User ${locatedUser.username} logged in succesfully!`})
+    } else {
+        return res.status(401);
+    }
+}
+
 function renderSignupPage(req, res) {
     return res.json('index')
 }
@@ -29,4 +45,5 @@ module.exports = {
     httpCreateUser,
     renderSignupPage,
     httpGetAllUsers,
+    httpAuthUser,
 }

@@ -45,15 +45,15 @@ async function getEmails() {
     }
 }
 
-async function getUser() {
+async function getUsers() {
     let getUserSQL = `
-    SELECT *
+    SELECT email, username, hashed_password
     FROM user`
 
     try {
-        const result = await mySQLDB.query(getUserSQL)
+        const users = await mySQLDB.query(getUserSQL)
         console.log("Retrieved users")
-        return true;
+        return users[0];
     }
     catch (error) {
         console.log("Error inserting user")
@@ -61,4 +61,4 @@ async function getUser() {
     }
 }
 
-module.exports = {createUser, getUser, getEmails}
+module.exports = {createUser, getUsers, getEmails}
