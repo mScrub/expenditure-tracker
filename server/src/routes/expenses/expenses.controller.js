@@ -3,6 +3,7 @@ const {
     getExpenseList,
     getExpensePostDet,
 } = require('../../models/expenses.models')
+const srvLookup = require('../../utilities/server.obj.lookup')
 
 const httpCreateExpense = async (req, res) => {
     let expense = req.body;
@@ -40,17 +41,19 @@ const httpGetExpenseList = async (req, res) => {
 const httpGetExpensePostDetail = async (req, res) => {
     let expenseParamsId = req.params.expensePostId; 
     const expensePostDetails = await getExpensePostDet(expenseParamsId)
-    if (!expensePostDetails[1].isSuccessRetrieval) {
-        return res.status(400).json({
-            error: "Failed to retrieve expense post detail"
-        })
+    if (expensePostDetails[1] === undefined) {
+        if (!expensePostDetails[0].isSuccessRetrieval) {
+            return res.status(400).json({
+                message: srvLookup.SERVER_RTN_MSG_EXPENSE.failedDetailRetrieval
+        })}
     } else {
-        res.status(200).json({
-            ok: true, 
-            expenseDetail: expensePostDetails
-        })
+        if (expensePostDetails[1].isSuccessRetrieval) {
+            res.status(200).json({
+                ok: true, 
+                expenseDetail: expensePostDetails
+        }) 
     }
-}
+}}
 
 module.exports = {
     httpCreateExpense,

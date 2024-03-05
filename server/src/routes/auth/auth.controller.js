@@ -59,7 +59,7 @@ async function httpAuthUser(req, res) {
             const accessToken = jwt.sign({
                 username: locatedUser.username,
             },  process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn: srvLookup.TOKEN_EXPIRATION.expiresIn30s
+                expiresIn: srvLookup.TOKEN_EXPIRATION.epxiresIn1d
             })
             res.json({
                 aT: accessToken

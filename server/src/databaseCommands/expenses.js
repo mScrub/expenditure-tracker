@@ -1,5 +1,5 @@
 const mySQLDB = require('../databaseConnectionSQL');
-
+const db_lookup = require('../utilities/server.obj.lookup')
 async function generateUUID() {
     let generateUUIDSQL = `SELECT uuidGen()`
     try {
@@ -117,7 +117,7 @@ async function getExpensePostDetail(paramsData) {
         let getExpensePostDetailSQL = `
         SELECT address, location_name, amount_spent, date_of_exp 
         FROM expense
-        WHERE user_id = 1
+        WHERE user_id = 4
         AND unique_url = :paramsId`
 
         let postDetExpenseParams = {
@@ -125,6 +125,9 @@ async function getExpensePostDetail(paramsData) {
         }
 
         const postDetResult = await mySQLDB.query(getExpensePostDetailSQL, postDetExpenseParams)
+        if (postDetResult[0].length === 0) {
+            throw new Error(db_lookup.DB_RTN_MSG.noSuchExpDetailPost)
+        }
         return {
             expensePostDetail: postDetResult[0],
             isSuccessRetrieval: true 
@@ -133,6 +136,7 @@ async function getExpensePostDetail(paramsData) {
         console.log("Unsuccessful retrieval of expense post detail");
         console.log(error);
         return {
+            expensePostDetail: [],
             error: error.sqlMessage,
             isSuccessRetrieval: false
         }
