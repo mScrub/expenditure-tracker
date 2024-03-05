@@ -1,4 +1,5 @@
 import { httpCreateUserFE } from './requests';
+const lookup = require('../utilities/objectLookup')
 
 function useUsers() {
     const submitUser = (async (e) => { 
@@ -11,15 +12,15 @@ function useUsers() {
         })
         const success = response.ok
         const message = response.message
-        if (message === "Email Conflict" && !success) {
+        if (message === lookup.ERROR_MSG.usernameConflict && !success) {
             return {
                 ok: false,
-                message: "Duplicate Email"
+                message: lookup.ERROR_MSG.duplicateUsername
             }
-        } else if (message === "Missing Data" && !success) {
+        } else if (message === lookup.ERROR_MSG.missingData && !success) {
             return {
                 ok: false,
-                message: "Missing Form Field Data"
+                message: lookup.ERROR_MSG.missingData
             }
         } else {
             return {

@@ -1,4 +1,5 @@
 const API_URL = process.env.REACT_APP_API_URL
+const lookup = require('../utilities/objectLookup')
 
 async function httpCreateUserFE(userData) {
     try {
@@ -12,22 +13,22 @@ async function httpCreateUserFE(userData) {
         if (response.ok) {
             return response;
         } else {
-            if (response.status === 409) throw new Error("409, Conflict");
-            if (response.status === 400) throw new Error("400, Missing Data");
+            if (response.status === lookup.ERROR_CODES[409]) throw new Error(lookup.ERROR_THROWS.throw409);
+            if (response.status === lookup.ERROR_CODES[400]) throw new Error(lookup.ERROR_THROWS.throw400);
             throw new Error(response.status);
         }
     } catch (error) {
         console.error("Fetch", error);
         let errorContent = error.toString();
-        if (errorContent.includes("409")) {
+        if (errorContent.includes(lookup.ERROR_CODES[409])) {
             return {
                 ok: false,
-                message: "Email Conflict"
+                message: lookup.ERROR_MSG.usernameConflict
             }
-        } else if (errorContent.includes("400")) {
+        } else if (errorContent.includes(lookup.ERROR_CODES[400])) {
             return {
                 ok: false,
-                message: "Missing Data"
+                message: lookup.ERROR_MSG.missingData
             }
         } else {
             return {
