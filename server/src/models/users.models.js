@@ -11,9 +11,9 @@ async function addUser(userData) {
     return successObj;
 }
 
-async function getEmails() {
-    let emails = await db_users.getEmails();
-    return emails;
+async function getUsernames() {
+    const usernames = await db_users.getUsernames();
+    return usernames;
 }
 
 async function getUsers() {
@@ -21,4 +21,4 @@ async function getUsers() {
     return users;
 }
 
-module.exports = {addUser, getEmails, getUsers}
+module.exports = {addUser, getUsernames, getUsers}

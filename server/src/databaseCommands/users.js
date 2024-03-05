@@ -31,17 +31,17 @@ async function createUser(postUserData) {
     }
 }
 
-async function getEmails() {
-    let getEmailsSQL = `
-    SELECT email
+async function getUsernames() {
+    let getUsernamesSQL = `
+    SELECT username
     FROM user`
 
     try {
-        const emailResult = await mySQLDB.query(getEmailsSQL);
-        console.log("Succeeded in email list retrieval")      
-        return emailResult[0];
+        const usernameResult = await mySQLDB.query(getUsernamesSQL);
+        console.log("Succeeded in username list retrieval")      
+        return usernameResult[0];
     } catch (err) {
-        console.log("Failed to retrieve emails");
+        console.log("Failed to retrieve usernames");
     }
 }
 
@@ -61,4 +61,4 @@ async function getUsers() {
     }
 }
 
-module.exports = {createUser, getUsers, getEmails}
+module.exports = {createUser, getUsers, getUsernames}
