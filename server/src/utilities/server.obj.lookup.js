@@ -14,8 +14,14 @@ const ERROR_CODE_MSG = {
     403 : 'Forbidden'
 }
 
+const COOKIE_MSG = {
+    clearedCookie: 'Cookie is cleared',
+    204: 'No content'
+}
+
 module.exports = {
     SERVER_RTN_MSG_USER,
     TOKEN_EXPIRATION,
-    ERROR_CODE_MSG
+    ERROR_CODE_MSG,
+    COOKIE_MSG
 }
