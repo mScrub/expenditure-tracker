@@ -14,14 +14,14 @@ async function httpAuthUser(req, res) {
     const pwMatch = await bcrypt.compare(user.password, locatedUser.hashed_password)
     if (pwMatch) {
         const accessToken = jwt.sign({
-                "username": locatedUser.username
+                username: locatedUser.username
             },
             process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: srvLookup.TOKEN_EXPIRATION.expiresIn30s
             }
         )
         const refreshToken = jwt.sign({
-                "username": locatedUser.username
+                username: locatedUser.username
             },
             process.env.REFRESH_TOKEN_SECRET, {
                 expiresIn: srvLookup.TOKEN_EXPIRATION.epxiresIn1d
