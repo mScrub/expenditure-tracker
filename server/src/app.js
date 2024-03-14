@@ -7,11 +7,10 @@ const expensesRouter = require('./routes/expenses/expenses.router');
 const authRouter = require('./routes/auth/auth.router');
 const verifyJWT = require('./middleware/verifyJWT');
 const cookieParser = require('cookie-parser')
+const corsOptions = require('../config/corsOptions')
 const app = express();
 
-app.use(cors({
-    origin: 'http://localhost:3000',
-}))
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, '..', 'public')))
