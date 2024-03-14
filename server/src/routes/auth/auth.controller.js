@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const { getUsers } = require('../../models/auth.models')
 const srvLookup = require('../../utilities/server.obj.lookup')
+const aT_EXPIRATION = process.env.ACCESS_TOKEN_EXPIRESIN
+const rT_EXPIRATION = process.env.REFRESH_TOKEN_EXPIRESIN
 
 async function httpAuthUser(req, res) {
     const user = req.body
@@ -17,14 +19,14 @@ async function httpAuthUser(req, res) {
                 username: locatedUser.username
             },
             process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn: srvLookup.TOKEN_EXPIRATION.expiresIn30s
+                expiresIn: aT_EXPIRATION
             }
         )
         const refreshToken = jwt.sign({
                 username: locatedUser.username
             },
             process.env.REFRESH_TOKEN_SECRET, {
-                expiresIn: srvLookup.TOKEN_EXPIRATION.epxiresIn1d
+                expiresIn: rT_EXPIRATION
             }
         )
         res.cookie('jwt', refreshToken, {
@@ -37,7 +39,7 @@ async function httpAuthUser(req, res) {
             "success": `User ${locatedUser.username} logged in succesfully!`
         })
     } else {
-        return res.status(401);
+        return res.status(401).json({message: srvLookup.ERROR_CODE_MSG[401]});
     }
 }
 
@@ -59,10 +61,10 @@ async function httpAuthUser(req, res) {
             const accessToken = jwt.sign({
                 username: locatedUser.username,
             },  process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn: srvLookup.TOKEN_EXPIRATION.epxiresIn1d
+                expiresIn: aT_EXPIRATION
             })
             res.json({
-                aT: accessToken
+                accessToken
             })
         }
     )

@@ -7,9 +7,11 @@ const {
 } = require('./auth.controller')
 
 const authRouter = express.Router();
+const authRoute = process.env.AUTH_ROUTE
+const refreshRoute = process.env.REFRESH_ROUTE
 
-authRouter.post('/auth', httpAuthUser)
-authRouter.get('/refresh', httpHandleRefreshT)
+authRouter.post(authRoute, httpAuthUser)
+authRouter.get(refreshRoute, httpHandleRefreshT)
 authRouter.get('/logout', httpLogout)
 
 module.exports = authRouter;
