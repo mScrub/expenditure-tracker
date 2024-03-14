@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
-require('dotenv').config();
-const srvLookup = require('../utilities/server.obj.lookup')
+const srvLookup = require('../src/utilities/server.obj.lookup')
 
 const verifyJWT = (req, res, next) => {
     const authHeader = req.headers['authorization'];
