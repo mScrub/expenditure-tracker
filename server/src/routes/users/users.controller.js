@@ -26,16 +26,6 @@ async function httpCreateUser(req, res) {
     }
 }
 
-function renderSignupPage(req, res) {
-    return res.json('index')
-}
-
-function httpGetAllUsers(req, res) {
-    return;
-}
-
 module.exports = {
     httpCreateUser,
-    renderSignupPage,
-    httpGetAllUsers,
 }
