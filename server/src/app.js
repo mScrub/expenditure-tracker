@@ -7,7 +7,7 @@ const expensesRouter = require('./routes/expenses/expenses.router');
 const authRouter = require('./routes/auth/auth.router');
 const verifyJWT = require('./middleware/verifyJWT');
 const cookieParser = require('cookie-parser')
-const corsOptions = require('../config/corsOptions');
+const corsOptions = require('./config/corsOptions');
 const credentials = require('../middleware/credentials');
 const app = express();
 
