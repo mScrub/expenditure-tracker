@@ -2,7 +2,7 @@ const mySQLDB = require('../databaseConnectionSQL');
 
 async function getUsers() {
     let getUserSQL = `
-    SELECT username, email, hashed_password
+    SELECT username, user_id, email, hashed_password
     FROM user`
 
     try {

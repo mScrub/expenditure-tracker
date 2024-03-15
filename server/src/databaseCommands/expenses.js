@@ -1,5 +1,9 @@
 const mySQLDB = require('../databaseConnectionSQL');
 const db_lookup = require('../utilities/server.obj.lookup')
+const startT = db_lookup.DB_QUERY_MSG.START_T
+const rollback = db_lookup.DB_QUERY_MSG.ROLLBACK
+const commit = db_lookup.DB_QUERY_MSG.COMMIT
+
 async function generateUUID() {
     let generateUUIDSQL = `SELECT uuidGen()`
     try {
@@ -22,7 +26,7 @@ async function verifyUUID(currentUUID) {
     }
 
     if (uuidResult[0].find(checkUUID)) {
-        await mySQLDB.query('ROLLBACK')
+        await mySQLDB.query(rollback)
         return {
             errorMsg: "Transaction failed",
             isUnique: false
@@ -41,22 +45,22 @@ async function createExpense(postExpenseData) {
     const lowerCaseUUID = storedUUID.toLowerCase();
 
     try {
-        await mySQLDB.query('START TRANSACTION')
+        await mySQLDB.query(startT)
         const uuidCheckObj = await verifyUUID(lowerCaseUUID)
 
         if (!uuidCheckObj.isUnique) {
-            await mySQLDB.query('ROLLBACK')
+            await mySQLDB.query(rollback)
             return {
-                error: 'Try creating expense again',
+                message: db_lookup.DB_RTN_MSG.recreateExpense,
                 isSuccess: false
             }
         } else {
             let createExpenseSQL =
                 `INSERT INTO expense(address, location_name, amount_spent, date_of_exp, unique_url, user_id)
-                 VALUES(:address, :locationName, :amountSpent, :date, :uniqueUUID,
-                 1)`
+                 VALUES(:address, :locationName, :amountSpent, :date, :uniqueUUID, :userId)`
 
             let paramsForExpense = {
+                userId: postExpenseData.userId,
                 address: postExpenseData.address,
                 locationName: postExpenseData.locationName,
                 amountSpent: postExpenseData.amountSpent,
@@ -65,7 +69,7 @@ async function createExpense(postExpenseData) {
             }
 
             await mySQLDB.query(createExpenseSQL, paramsForExpense)
-            await mySQLDB.query('COMMIT');
+            await mySQLDB.query(commit);
             console.log("Successfully created expense")
             return {
                 isSuccess: true
@@ -75,7 +79,7 @@ async function createExpense(postExpenseData) {
     } catch (error) {
         console.log(error)
         console.log("Error inserting expense")
-        mySQLDB.query('ROLLBACK')
+        mySQLDB.query(rollback)
         return {
             error: error.sqlMessage,
             isSuccess: false
@@ -83,14 +87,14 @@ async function createExpense(postExpenseData) {
     }
 }
 
-async function getExpenseList(user) {
+async function getExpenseList(paramsData) {
     let getExpenseListSQL = `
     SELECT expense_id, address, location_name, amount_spent, date_of_exp, unique_url 
     FROM expense 
     WHERE user_id = :user_id`
 
     let expenseRetrievalParams = {
-        user_id: user.userId
+        user_id: paramsData.userId
     }
 
     try {
@@ -113,15 +117,15 @@ async function getExpenseList(user) {
 
 async function getExpensePostDetail(paramsData) {
     try {
-        // temp.
         let getExpensePostDetailSQL = `
         SELECT address, location_name, amount_spent, date_of_exp 
         FROM expense
-        WHERE user_id = 4
+        WHERE user_id = :userId
         AND unique_url = :paramsId`
 
         let postDetExpenseParams = {
-            paramsId: paramsData.postDetailId
+            paramsId: paramsData.postDetailId,
+            userId: paramsData.userId,
         }
 
         const postDetResult = await mySQLDB.query(getExpensePostDetailSQL, postDetExpenseParams)

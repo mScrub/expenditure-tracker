@@ -6,16 +6,17 @@ const {
 const srvLookup = require('../../utilities/server.obj.lookup')
 
 const httpCreateExpense = async (req, res) => {
+    const uid = req.uid;
     let expense = req.body;
     if (!expense.address || !expense.locationName || !expense.amountSpent || !expense.date) {
         return res.status(400).json({
-            error: 'Missing one of the required expense entry fields'
+            message: srvLookup.SERVER_RTN_MSG_EXPENSE.missingInputFieldsOnCreateExpense
         })
     }
-    const pendingExpense = await addExpense(expense)
+    const pendingExpense = await addExpense(uid, expense)
     if (pendingExpense & !pendingExpense.isSuccess) {
         return res.status(400).json({
-            error: 'Unsuccessful expense creation'
+            message: srvLookup.SERVER_RTN_MSG_EXPENSE.unsuccessfulExpCreation
         })
     }
     else {
@@ -24,10 +25,11 @@ const httpCreateExpense = async (req, res) => {
 }
 
 const httpGetExpenseList = async (req, res) => {
-    let pendingRetrieval = await getExpenseList(1)
+    const uid = req.uid;
+    let pendingRetrieval = await getExpenseList(uid)
     if (!pendingRetrieval.isSuccessRetrieval) {
         return res.status(400).json({
-            error: "Failed to retrieve expense post list"
+            message: srvLookup.SERVER_RTN_MSG_EXPENSE.failedDetailRetrieval
         })
     } else {
         console.log(pendingRetrieval.expenseListData)
@@ -39,8 +41,9 @@ const httpGetExpenseList = async (req, res) => {
 }
 
 const httpGetExpensePostDetail = async (req, res) => {
+    const uid = req.uid;
     let expenseParamsId = req.params.expensePostId; 
-    const expensePostDetails = await getExpensePostDet(expenseParamsId)
+    const expensePostDetails = await getExpensePostDet(uid, expenseParamsId)
     if (expensePostDetails[1] === undefined) {
         if (!expensePostDetails[0].isSuccessRetrieval) {
             return res.status(400).json({
