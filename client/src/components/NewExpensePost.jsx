@@ -3,7 +3,7 @@ import useInput from '../hooks/useInput'
 import useDate from '../hooks/useDate'
 import useExpenses from '../hooks/useExpenses';
 import { isNumeric } from '../utilities/sideFunctions';
-import classes from './NewExpenseTracker.module.css'
+import classes from './NewExpensePost.module.css'
 import GoogleMapsPlaces from './maps/GoogleMapsPlaces';
 import FormEntryField from './FormEntryField';
 
