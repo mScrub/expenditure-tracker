@@ -7,6 +7,8 @@ import TrackerPage from './components/NewExpensePost'
 import RootLayoutWrapper from './pages/RootLayoutWrapper'
 import ExpenseRecord from './pages/ExpenseRecord';
 import ExpensePostDetails from './pages/ExpensePostDetails';
+import WelcomePage from '../src/components/Welcome'
+import RequireAuth from '../src/components/RequireAuth';
 
 function App() {
   return (
@@ -16,10 +18,13 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/about" element={<AboutPage />} />
-
-        <Route path="/tracker" element={<TrackerPage />}/>
-        <Route path="/expensehistory" element={<ExpenseRecord />}>
-          <Route path="/expensehistory/:expensePostId" element={<ExpensePostDetails />} />
+        <Route path="/welcome" element={<WelcomePage />} />
+        
+        <Route element={<RequireAuth />}>
+          <Route path="/tracker" element={<TrackerPage />} />
+          <Route path="/expensehistory" element={<ExpenseRecord />}>
+            <Route path="/expensehistory/:expensePostId" element={<ExpensePostDetails />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
