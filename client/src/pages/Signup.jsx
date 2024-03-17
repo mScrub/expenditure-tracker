@@ -3,9 +3,9 @@ import SignupForm from '../components/NewSignupForm'
 
 function Signup() {
     return (
-    <Fragment>
-        <SignupForm />
-    </Fragment>
+        <Fragment>
+            <SignupForm />
+        </Fragment>
     )
 };
 

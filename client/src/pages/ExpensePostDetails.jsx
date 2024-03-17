@@ -1,11 +1,19 @@
 
-import { Link, useLoaderData } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useGetExpensePostDetQuery } from '../features/expense/expensePostDetApiSlice'
+import { selectCurrentId } from '../features/expense/expenseDetSlice'
 import Modal from '../components/Modal'
 import ExpenseCards from '../components/ExpensePostDetailsCard'
 
 const ExpensePostDetails = () => {
-    const postData = useLoaderData()
+    const id = useSelector(selectCurrentId);
+    const {
+        data: postData,
+        isLoading,
+    } = useGetExpensePostDetQuery(id)
     
+    if (isLoading) { return (<Modal><div>Loading details...</div></Modal>)}
     if (!postData) {
         return (
             <Modal>

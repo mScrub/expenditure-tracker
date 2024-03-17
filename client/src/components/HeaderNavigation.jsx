@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom'
 import classes from '../components/HeaderNavigation.module.css'
 
 const Header = () => {
-    return <Fragment>
+    return <>
         <div className={classes.container}>
             <header className={classes.header}>
                 <nav>
@@ -24,7 +24,7 @@ const Header = () => {
                 </nav>
             </header>
         </div>
-    </Fragment>
+    </>
 }
 
 export default Header;

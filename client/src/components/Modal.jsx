@@ -1,11 +1,16 @@
 
 import classes from './Modal.module.css'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { resetId } from '../features/expense/expenseDetSlice';
+
 const Modal = ({ children }) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const onModalSelectHandler = () => {
-        navigate('..')
+        dispatch(resetId());
+        navigate('..');
     }
     return (
         <>
