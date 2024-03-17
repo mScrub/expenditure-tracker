@@ -5,11 +5,20 @@ function Home() {
     return (
         <div>
             <h1>Welcome to Expense Locator</h1>
-            <p><Link to='/signup'>
-                <div className={classes['custom-a-tag']}>
-                    Sign up Now!
-                </div>
-            </Link></p>
+            <p>
+                <Link to='/signup'>
+                    <div className={classes['custom-a-tag']}>
+                        Sign up Now!
+                    </div>
+                </Link>
+            </p>
+            <p>
+                <Link to="/signin">
+                    <div className={classes['custom-a-tag']}>
+                        Sign in Now!
+                    </div>
+                </Link>
+            </p>
         </div>
     )
 }

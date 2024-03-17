@@ -2,9 +2,11 @@ import { Fragment } from "react";
 import SignupForm from '../components/NewSignupForm'
 
 function Signup() {
-    return (<Fragment>
+    return (
+    <Fragment>
         <SignupForm />
-    </Fragment>)
-}
+    </Fragment>
+    )
+};
 
 export default Signup;
