@@ -20,7 +20,9 @@ const httpCreateExpense = async (req, res) => {
         })
     }
     else {
-        return res.status(201).json(pendingExpense)
+        return res.status(201).json({
+            isSuccess: pendingExpense.isSuccess
+        })
     }
 }
 
