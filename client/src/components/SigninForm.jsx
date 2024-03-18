@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react'
 import useInput from '../hooks/useInput'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useLoginMutation } from '../features/auth/authApiSlice'
 import { setCredentials } from '../features/auth/authSlice'
+import useFormValidator from '../hooks/useFormValidator'
+import useExceptionHandler from '../hooks/useExceptionHandler'
 import FormEntryField from '../components/FormEntryField'
 import { isAlphaNumeric } from '../utilities/sideFunctions'
 import classes from '../components/NewSignupForm.module.css'
 import objLookup from '../utilities/objectLookup';
 
 const SignInForm = () => {
-    const [formIsValid, setFormIsValid] = useState(false);
-    const [errMsg, setErrMsg] = useState('');
+    const { exeRTKHook, resetErrMsg, errMsg } = useExceptionHandler();
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const timeDelay = objLookup.TIMER.fiveS;
 
     const {
         value: enteredUserName,
@@ -32,45 +33,25 @@ const SignInForm = () => {
         valueInputChangeHandler: enteredPWChangeHandler,
         valueInputBlurOrFocusHandler: enteredPWBlurHandler,
         resetStates: resetPWField,
-    } = useInput((pwValue) => pwValue.trim() !== '' && !isAlphaNumeric(pwValue))
+    } = useInput((pwValue) => pwValue.trim() !== '' && !isAlphaNumeric(pwValue));
 
     const resetFields = () => {
         resetUserNameFieldInput();
         resetPWField();
     }
 
-    useEffect(() => {
-        if (enteredUserNameIsValid && enteredPasswordIsValid) {
-            setFormIsValid(true);
-        } else {
-            setFormIsValid(false);
-        }
-    }, [enteredUserNameIsValid, enteredPasswordIsValid])
-
-    useEffect(() => {
-        setErrMsg('');
-    }, [enteredUserName, enteredPassword])
-
+    const { formIsValid } = useFormValidator(enteredUserNameIsValid, enteredPasswordIsValid);
 
     const formSubmissionHandler = async event => {
         event.preventDefault();
-        if (!enteredUserNameIsValid || !enteredPasswordIsValid) return;
-        try {
-            const userData = await login({ username: enteredUserName, password: enteredPassword }).unwrap()
-            dispatch(setCredentials({ ...userData, user: enteredUserName }))
-            resetFields();
-            navigate('/welcome')
-        } catch (error) {
-            if (!error?.status) { 
-                setErrMsg(objLookup.ERROR_MSG.noServerResponse);
-            } else if (error.status === objLookup.ERROR_CODES_NUM[400]) {
-                setErrMsg(objLookup.ERROR_MSG.missingUnameAndPwd);
-            } else if (error.status === objLookup.ERROR_CODES_NUM[401]) {
-                setErrMsg(objLookup.ERROR_MSG.unauthorized)
-            } else {
-                setErrMsg(objLookup.ERROR_MSG.failedLogin)
-            }
-        }
+        const result = await exeRTKHook(() => login({ username: enteredUserName, password: enteredPassword }).unwrap());
+        if (result) {
+            dispatch(setCredentials({ ...result.response , user: enteredUserName }));
+            navigate('/welcome');
+        } else { 
+            setTimeout(resetErrMsg, timeDelay);
+        }        
+        resetFields();
     }
 
     const baseInputClass = classes['form-control'];

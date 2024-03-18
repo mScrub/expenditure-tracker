@@ -25,10 +25,14 @@ const ERROR_THROWS = {
     throw409 : "409, Conflict",
 }
 
+const TIMER = {
+    fiveS : 5000
+}
 
 module.exports = {
     ERROR_MSG,
     ERROR_CODES,
     ERROR_THROWS,
-    ERROR_CODES_NUM
+    ERROR_CODES_NUM,
+    TIMER
 }

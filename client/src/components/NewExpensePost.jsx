@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput'
 import useDate from '../hooks/useDate'
 import useExpenses from '../hooks/useExpenses';
-import { isNumeric } from '../utilities/sideFunctions';
-import classes from './NewExpensePost.module.css'
+import useFormValidator from '../hooks/useFormValidator'
+import useExceptionHandler from '../hooks/useExceptionHandler';
+import { useNewPostMutation } from '../features/expense/expenseNewPostApiSlice';
 import GoogleMapsPlaces from './maps/GoogleMapsPlaces';
 import FormEntryField from './FormEntryField';
+import { isNumeric } from '../utilities/sideFunctions';
+import objLookup from '../utilities/objectLookup'
+import classes from './NewExpensePost.module.css'
 
-
-function ExpenseTracker() {
-  const [formIsValid, setFormIsValid] = useState(false);
+const ExpenseTracker = () => {
+  const { exeRTKHook, resetErrMsg, errMsg } = useExceptionHandler();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [pendingExpenseCreation, setIsPendingExpenseCreation] = useState(false);
-  const { submitExpense } = useExpenses();
+  const [createPost, { isLoading }] = useNewPostMutation();
+  const { obtainPostInput } = useExpenses();
+  const navigate = useNavigate();
+  const timeDelay = objLookup.TIMER.fiveS
 
   const {
     value: enteredAddr,
@@ -50,14 +56,7 @@ function ExpenseTracker() {
     resetState: resetDateField
   } = useDate((date) => date !== null)
 
-  useEffect(() => {
-    if (enteredNameIsValid && amountIsValid && dateIsValid && enteredAddrIsValid) {
-      setFormIsValid(true);
-    } else {
-      setFormIsValid(false);
-    }
-
-  }, [enteredNameIsValid, amountIsValid, dateIsValid, enteredAddrIsValid]);
+  const { formIsValid } = useFormValidator(enteredNameIsValid, amountIsValid, dateIsValid, enteredAddrIsValid);
 
   const resetExpenseFormFields = () => {
     resetNameField();
@@ -70,13 +69,16 @@ function ExpenseTracker() {
     event.preventDefault();
     setIsFormSubmitted(true);
     if (!enteredNameIsValid || !enteredAmountSpent || !enteredDate || !enteredAddr) return;
-    const createExpStat = await submitExpense(event);
-    if (!createExpStat.respFlag) {
-      setIsPendingExpenseCreation(true);
+      const cvrtdResult = await obtainPostInput(event);
+      const result = await exeRTKHook(() => createPost({ address: cvrtdResult.address, amountSpent: cvrtdResult.amountSpent, date: cvrtdResult.date, locationName: cvrtdResult.locationName }));
+      if (result.response.data.isSuccess === true) {
+        navigate(".")
+      }
+      else { 
+        setTimeout(resetErrMsg, timeDelay)
+    }      
       resetExpenseFormFields();
-      return;
-    }
-    resetExpenseFormFields();
+
   };
 
   const baseInputCSSClass = classes['form-control']
@@ -85,7 +87,7 @@ function ExpenseTracker() {
   const truncateClassAmount = amountisInvalid ? classes['invalid'] : '';
   const truncateClassDate = dateIsInvalid ? classes['invalid'] : '';
 
-  return (
+  const postContent = isLoading ? <h1>Creating Post...</h1> :
     <>
       <div className={classes['main-container']}>
         <div className={classes['left-container']}>
@@ -145,11 +147,11 @@ function ExpenseTracker() {
           </form>
 
           <div>
-            {pendingExpenseCreation && <p>Error, try once more</p>}
             {enteredAddrHasError && <p>Address must not be empty</p>}
             {enteredNameHasError && <p>Location name must not be empty</p>}
             {amountisInvalid && <p>Amount spent can't be empty nor less than 0</p>}
             {dateIsInvalid && <p>Date can't be empty</p>}
+            {<p className={errMsg ? classes.errmsg : "offscreen"} aria-live="assertive">{errMsg}</p>}
           </div>
 
           <div className={classes['form-actions']}>
@@ -160,10 +162,14 @@ function ExpenseTracker() {
         </div>
 
         <div className={classes['right-container']}>
-          <GoogleMapsPlaces onAddressChange={addrChangeHandler} onFieldTouch={addrBlurHandler} onFormSubmission={isFormSubmitted}  />
+          <GoogleMapsPlaces onAddressChange={addrChangeHandler} onFieldTouch={addrBlurHandler} onFormSubmission={isFormSubmitted} />
         </div>
       </div>
     </>
+
+
+  return (
+    postContent
   );
 }
 

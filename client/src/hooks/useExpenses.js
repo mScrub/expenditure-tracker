@@ -1,62 +1,17 @@
-import {
-    httpCreateExpense,
-    httpGetExpenseList,
-    httpGetExpensePostDetail
-} from "./requests";
-const lookup = require('../utilities/objectLookup')
-
-
 function useExpenses() {
-    const submitExpense = (async (e) => {
+    const obtainPostInput = (e) => {
         const expenseData = new FormData(e.target);
         const address = expenseData.get("address")
         const locationName = expenseData.get("locationName")
         const amountSpent = expenseData.get("amountSpent")
         const date = expenseData.get("date")
-        const response = await httpCreateExpense({
+        return {
             address,
             locationName,
             amountSpent,
             date
-        })
-        const success = response.ok;
-        if (!success) {
-            const text = await response.json();
-            return {
-                respFlag: false,
-                respMsg: text.error
-            }
-        } else {
-            return true;
-        }
-    })
-
-    const getExpenseList = async () => {
-        const response = await httpGetExpenseList()
-        let success = response.ok
-        if (success) {
-            return response.expenseList;
-        } else {
-            return [];
-        }
-    }
-    return {
-        submitExpense,
-        getExpenseList,
-    }
+        }}
+        return obtainPostInput;
 }
 export default useExpenses;
 
-export const getExpensePostDetails = async (expensePostId) => {
-    const response = await httpGetExpensePostDetail(expensePostId)        ;
-    const result = response.ok;
-    const message = response.message;
-    if (!result && message === lookup.ERROR_MSG.failedExpDetailsFetch) {
-        return {
-            ok: false, 
-            message: lookup.ERROR_MSG.noExpDetail
-        }
-    } else {
-        return response.expenseDetail;
-    }
-}
